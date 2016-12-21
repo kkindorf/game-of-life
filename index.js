@@ -40,42 +40,64 @@ var BoardContainer = React.createClass({
      clearInterval(this.state.intervalId);
   },
   startGame: function(e){
+    console.log(arr)
     this.setState({start: true, clear: false})
+    if(this.state.currentCount === 0){
+      let intervalId=(setInterval(this.state.setBoard, 300))
+     this.setState({intervalId: intervalId});
+    }
   },
   stopGame: function(e){
     this.setState({start: false})
   },
   clearGame: function(e){
-    arr = this.state.squareClass;
-    for(let i = 0; i < arr.length; i++){
-      arr[i]=0;
+    console.log(arr);
+    let newarr = this.state.squareClass;
+    for(let i = 0; i < newarr.length; i++){
+      newarr[i]=0;
     }
-    this.setState({squareClass: arr, clear: true, currentCount: 0})
+    this.setState({squareClass: newarr, clear: true, currentCount: 0})
   },
   onClick: function(e){
-    arr = [].concat.apply([],arr)
     if(!this.state.clear){
       return;
     }
     let id = e.target.id;
-    arr = this.state.squareClass;
-    if(arr[id]===1){
+    let newarr = this.state.squareClass;
+    if(newarr[id]===1){
       e.target.className='squareDie';
-      arr[id] = 0;
+      newarr[id] = 0;
 
     }
-    else if(arr[id]===0){
+    else if(newarr[id]===0){
       e.target.className='squareLive';
-      arr[id] = 1;
+      newarr[id] = 1;
+
+    }
+    let size = this.state.squareNum * this.state.rowNum;
+    var squares = [];
+    var rows = [];
+    for(let i=0; i < size; i++){
+      squares.push(newarr[i])
+      if(squares.length === this.state.squareNum){
+        rows.push(squares);
+        squares = [];
+      }
+      if(rows.length === this.state.rowNum){
+        arr = rows;
+      }
 
     }
 
-    this.setState({squareClass: arr})
+    console.log(arr)
+    this.setState({squareClass: newarr})
+
 
   },
   switch: function(){
+    console.log(arr)
     let next = JSON.parse(JSON.stringify(arr));
-    console.log(next)
+
 for (let x = 1; x < arr.length-1; x++) {
 for (let y = 1; y < arr[x].length-1; y++) {
 let neighbors = 0;
@@ -100,7 +122,6 @@ neighbors -= arr[x][y];
     if(this.state.start && !this.state.clear){
       console.log(this.state.squareClass)
       this.setState({squareClass: this.switch()});
-      console.log(this.state.squareClass)
       var size = this.state.squareNum*this.state.rowNum;
       var squares = [];
       var rows = [];
