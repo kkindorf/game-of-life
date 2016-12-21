@@ -107,6 +107,17 @@
 	  },
 	  startGame: function startGame(e) {
 	    console.log(arr);
+	    var count = 0;
+	    for (var i = 0; i < arr.length; i++) {
+	      for (var j = 0; j < arr[i].length; j++) {
+	        if (arr[i][j] === 0) {
+	          count++;
+	        }
+	      }
+	    }
+	    if (count === this.state.squareNum * this.state.rowNum) {
+	      return;
+	    }
 	    this.setState({ start: true, clear: false });
 	    if (this.state.currentCount === 0) {
 	      var intervalId = setInterval(this.state.setBoard, 300);
@@ -118,9 +129,17 @@
 	  },
 	  clearGame: function clearGame(e) {
 	    console.log(arr);
+	    var thisArr = arr;
+	    var count = 0;
+	    for (var i = 0; i < thisArr.length; i++) {
+	      for (var j = 0; j < thisArr[i].length; j++) {
+	        thisArr[i][j] = 0;
+	      }
+	    }
+	    arr = thisArr;
 	    var newarr = this.state.squareClass;
-	    for (var i = 0; i < newarr.length; i++) {
-	      newarr[i] = 0;
+	    for (var _i2 = 0; _i2 < newarr.length; _i2++) {
+	      newarr[_i2] = 0;
 	    }
 	    this.setState({ squareClass: newarr, clear: true, currentCount: 0 });
 	  },
@@ -177,7 +196,19 @@
 	  },
 	  setBoard: function setBoard() {
 	    if (this.state.start && !this.state.clear) {
-	      console.log(this.state.squareClass);
+	      var thisArr = arr;
+	      var count = 0;
+	      for (var _i3 = 0; _i3 < thisArr.length; _i3++) {
+	        for (var j = 0; j < thisArr[_i3].length; j++) {
+	          if (thisArr[_i3][j] === 0) {
+	            count++;
+	          }
+	        }
+	      }
+	      if (count === this.state.squareNum * this.state.rowNum) {
+	        this.setState({ currentCount: -1, clear: true });
+	      }
+	
 	      this.setState({ squareClass: this.switch() });
 	      var size = this.state.squareNum * this.state.rowNum;
 	      var squares = [];
@@ -214,7 +245,7 @@
 	    }
 	  },
 	  render: function render() {
-	    // You do not need to decrease the value here
+	
 	    return _react2.default.createElement(
 	      'div',
 	      null,
@@ -223,6 +254,11 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_board2.default, { rows: this.state.board })
+	      ),
+	      _react2.default.createElement(
+	        'h3',
+	        null,
+	        'Click the clear button to set up board or wait for all cells to die.'
 	      ),
 	      _react2.default.createElement(
 	        'button',
@@ -1016,12 +1052,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+	
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+	
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 	
 	  if (!condition) {
 	    var error;
@@ -4893,12 +4935,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+	
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+	
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 	
 	  if (!condition) {
 	    var error;

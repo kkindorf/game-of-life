@@ -41,6 +41,17 @@ var BoardContainer = React.createClass({
   },
   startGame: function(e){
     console.log(arr)
+    let count = 0;
+    for(let i = 0; i<arr.length; i++){
+      for(let j = 0; j < arr[i].length; j++){
+        if(arr[i][j] === 0){
+          count++;
+        }
+      }
+    }
+    if(count === this.state.squareNum*this.state.rowNum){
+      return;
+    }
     this.setState({start: true, clear: false})
     if(this.state.currentCount === 0){
       let intervalId=(setInterval(this.state.setBoard, 300))
@@ -52,6 +63,15 @@ var BoardContainer = React.createClass({
   },
   clearGame: function(e){
     console.log(arr);
+    let thisArr = arr;
+       let count = 0;
+    for(let i = 0; i<thisArr.length; i++){
+      for(let j = 0; j < thisArr[i].length; j++){
+        thisArr[i][j] = 0
+          
+      }
+    }
+    arr = thisArr;
     let newarr = this.state.squareClass;
     for(let i = 0; i < newarr.length; i++){
       newarr[i]=0;
@@ -120,7 +140,20 @@ neighbors -= arr[x][y];
 },
   setBoard: function() {
     if(this.state.start && !this.state.clear){
-      console.log(this.state.squareClass)
+      let thisArr = arr;
+      let count = 0;
+      for(let i = 0; i < thisArr.length; i++){
+        for(let j = 0; j < thisArr[i].length; j++){
+          if(thisArr[i][j]===0){
+            count++;
+          }
+        }
+      }
+      if(count === this.state.squareNum*this.state.rowNum){
+        this.setState({currentCount: -1, clear: true})
+        
+      }
+      
       this.setState({squareClass: this.switch()});
       var size = this.state.squareNum*this.state.rowNum;
       var squares = [];
@@ -158,13 +191,14 @@ neighbors -= arr[x][y];
 
   },
   render: function() {
-      // You do not need to decrease the value here
+     
       return (
         <div>
          {this.state.currentCount}
          <div>
          <Board rows = {this.state.board}/>
          </div>
+         <h3>Click the clear button to set up board or wait for all cells to die.</h3>
          <button type="button" className="btn btn-primary" onClick={this.startGame}>Start</button>
          <button type="button" className="btn btn-primary" onClick={this.stopGame}>Stop</button>
          <button type="button" className="btn btn-primary" onClick={this.clearGame}>Clear</button>
