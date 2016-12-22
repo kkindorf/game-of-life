@@ -1,20 +1,46 @@
-.board{
- max-width: 600px;
- margin: auto;
+@color: #47494c;
+@padding: 15px;
+.head{
+  text-align: center;
+  padding: 5px;
+  color: @color;
 }
-.rows{
- display: flex;
+.game-container {
+    color: @color;
+    max-width: 650px;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .board{
+      padding: @padding;
+      .rows {
+          display: flex;
+      }
+    }
 }
 .squareBlank {
- background: none;
-
+    background: none;
 }
 .squareLive {
- background: green;
- border:1px solid black;
- padding:10px;
+    background: #199CFF;
+    border: 1px solid #7F3E19;
+    padding: @padding - 7;
 }
+
 .squareDie {
-  border:1px solid black;
- padding:10px;
+    border: 1px solid #7F3E19;
+    padding: @padding - 7;
+}
+
+.buttons {
+    padding: @padding - 5;
+    .first {
+        margin-right: @padding - 5;
+    }
+    .second {
+        margin-right: @padding - 5;
+    }
+
 }

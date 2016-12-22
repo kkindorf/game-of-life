@@ -6,7 +6,7 @@ import Board from './components/board';
 var arr = [];
 var BoardContainer = React.createClass({
   getInitialState: function() {
-    return { currentCount: 0, start: true, clear: false,  intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 10, rowNum: 10};
+    return { currentCount: 0, start: true, clear: false,  intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 30, rowNum: 20};
   },
   componentWillMount: function(){
     let size = this.state.squareNum * this.state.rowNum;
@@ -62,13 +62,11 @@ var BoardContainer = React.createClass({
     this.setState({start: false})
   },
   clearGame: function(e){
-    console.log(arr);
     let thisArr = arr;
-       let count = 0;
     for(let i = 0; i<thisArr.length; i++){
       for(let j = 0; j < thisArr[i].length; j++){
         thisArr[i][j] = 0
-          
+
       }
     }
     arr = thisArr;
@@ -106,9 +104,7 @@ var BoardContainer = React.createClass({
       if(rows.length === this.state.rowNum){
         arr = rows;
       }
-
     }
-
     console.log(arr)
     this.setState({squareClass: newarr})
 
@@ -151,9 +147,9 @@ neighbors -= arr[x][y];
       }
       if(count === this.state.squareNum*this.state.rowNum){
         this.setState({currentCount: -1, clear: true})
-        
+
       }
-      
+
       this.setState({squareClass: this.switch()});
       var size = this.state.squareNum*this.state.rowNum;
       var squares = [];
@@ -191,18 +187,25 @@ neighbors -= arr[x][y];
 
   },
   render: function() {
-     
+
       return (
-        <div>
-         {this.state.currentCount}
-         <div>
-         <Board rows = {this.state.board}/>
+        <div className="container-fluid">
+          <div className="row">
+          <div className="col-xs-12">
+           <h1 className="head">The Game of Life</h1>
+            <div className="game-container">
+              <h3 className="gen">Generation: {this.state.currentCount}</h3>
+              <Board rows = {this.state.board}/>
+              <h4 className="instructions">Clear the game to reset the board or try to wait for all of the cells to die.</h4>
+              <div className="buttons">
+                <button type="button" className=" first btn btn-primary" onClick={this.startGame}>Start</button>
+                <button type="button" className=" second btn btn-primary" onClick={this.stopGame}>Stop</button>
+                <button type="button" className=" third btn btn-primary" onClick={this.clearGame}>Clear</button>
+              </div>
+              </div>
+           </div>
          </div>
-         <h3>Click the clear button to set up board or wait for all cells to die.</h3>
-         <button type="button" className="btn btn-primary" onClick={this.startGame}>Start</button>
-         <button type="button" className="btn btn-primary" onClick={this.stopGame}>Stop</button>
-         <button type="button" className="btn btn-primary" onClick={this.clearGame}>Clear</button>
-         </div>
+        </div>
       );
   }
 });

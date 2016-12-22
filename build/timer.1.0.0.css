@@ -1,20 +1,42 @@
-.board {
-  max-width: 600px;
-  margin: auto;
+.head {
+  text-align: center;
+  padding: 5px;
+  color: #47494c;
 }
-.rows {
+.game-container {
+  color: #47494c;
+  max-width: 650px;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game-container .board {
+  padding: 15px;
+}
+.game-container .board .rows {
   display: flex;
 }
 .squareBlank {
   background: none;
 }
 .squareLive {
-  background: green;
-  border: 1px solid black;
-  padding: 10px;
+  background: #199CFF;
+  border: 1px solid #7F3E19;
+  padding: 8px;
 }
 .squareDie {
-  border: 1px solid black;
+  border: 1px solid #7F3E19;
+  padding: 8px;
+}
+.buttons {
   padding: 10px;
+}
+.buttons .first {
+  margin-right: 10px;
+}
+.buttons .second {
+  margin-right: 10px;
 }
 /*# sourceMappingURL=timer.1.0.0.css.map */

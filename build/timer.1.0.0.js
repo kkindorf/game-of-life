@@ -73,7 +73,7 @@
 	  displayName: 'BoardContainer',
 	
 	  getInitialState: function getInitialState() {
-	    return { currentCount: 0, start: true, clear: false, intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 10, rowNum: 10 };
+	    return { currentCount: 0, start: true, clear: false, intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 30, rowNum: 20 };
 	  },
 	  componentWillMount: function componentWillMount() {
 	    var size = this.state.squareNum * this.state.rowNum;
@@ -128,9 +128,7 @@
 	    this.setState({ start: false });
 	  },
 	  clearGame: function clearGame(e) {
-	    console.log(arr);
 	    var thisArr = arr;
-	    var count = 0;
 	    for (var i = 0; i < thisArr.length; i++) {
 	      for (var j = 0; j < thisArr[i].length; j++) {
 	        thisArr[i][j] = 0;
@@ -169,7 +167,6 @@
 	        arr = rows;
 	      }
 	    }
-	
 	    console.log(arr);
 	    this.setState({ squareClass: newarr });
 	  },
@@ -248,32 +245,54 @@
 	
 	    return _react2.default.createElement(
 	      'div',
-	      null,
-	      this.state.currentCount,
+	      { className: 'container-fluid' },
 	      _react2.default.createElement(
 	        'div',
-	        null,
-	        _react2.default.createElement(_board2.default, { rows: this.state.board })
-	      ),
-	      _react2.default.createElement(
-	        'h3',
-	        null,
-	        'Click the clear button to set up board or wait for all cells to die.'
-	      ),
-	      _react2.default.createElement(
-	        'button',
-	        { type: 'button', className: 'btn btn-primary', onClick: this.startGame },
-	        'Start'
-	      ),
-	      _react2.default.createElement(
-	        'button',
-	        { type: 'button', className: 'btn btn-primary', onClick: this.stopGame },
-	        'Stop'
-	      ),
-	      _react2.default.createElement(
-	        'button',
-	        { type: 'button', className: 'btn btn-primary', onClick: this.clearGame },
-	        'Clear'
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-xs-12' },
+	          _react2.default.createElement(
+	            'h1',
+	            { className: 'head' },
+	            'The Game of Life'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'game-container' },
+	            _react2.default.createElement(
+	              'h3',
+	              { className: 'gen' },
+	              'Generation: ',
+	              this.state.currentCount
+	            ),
+	            _react2.default.createElement(_board2.default, { rows: this.state.board }),
+	            _react2.default.createElement(
+	              'h4',
+	              { className: 'instructions' },
+	              'Clear the game to reset the board or try to wait for all of the cells to die.'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'buttons' },
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: ' first btn btn-primary', onClick: this.startGame },
+	                'Start'
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: ' second btn btn-primary', onClick: this.stopGame },
+	                'Stop'
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: ' third btn btn-primary', onClick: this.clearGame },
+	                'Clear'
+	              )
+	            )
+	          )
+	        )
 	      )
 	    );
 	  }
@@ -1052,18 +1071,12 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	var validateFormat = function validateFormat(format) {};
-	
-	if (process.env.NODE_ENV !== 'production') {
-	  validateFormat = function validateFormat(format) {
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  };
-	}
-	
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  validateFormat(format);
+	  }
 	
 	  if (!condition) {
 	    var error;
@@ -4935,18 +4948,12 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	var validateFormat = function validateFormat(format) {};
-	
-	if (process.env.NODE_ENV !== 'production') {
-	  validateFormat = function validateFormat(format) {
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  };
-	}
-	
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  validateFormat(format);
+	  }
 	
 	  if (!condition) {
 	    var error;
