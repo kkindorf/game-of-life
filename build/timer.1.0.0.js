@@ -54,250 +54,13 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _square = __webpack_require__(183);
+	var _boardContainer = __webpack_require__(183);
 	
-	var _square2 = _interopRequireDefault(_square);
-	
-	var _row = __webpack_require__(184);
-	
-	var _row2 = _interopRequireDefault(_row);
-	
-	var _board = __webpack_require__(185);
-	
-	var _board2 = _interopRequireDefault(_board);
+	var _boardContainer2 = _interopRequireDefault(_boardContainer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var arr = [];
-	var BoardContainer = _react2.default.createClass({
-	  displayName: 'BoardContainer',
-	
-	  getInitialState: function getInitialState() {
-	    return { currentCount: 0, start: true, clear: false, intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 30, rowNum: 20 };
-	  },
-	  componentWillMount: function componentWillMount() {
-	    var size = this.state.squareNum * this.state.rowNum;
-	    var squares = [];
-	    var rows = [];
-	    for (var i = 0; i < size; i++) {
-	      squares.push(0);
-	      if (squares.length === this.state.squareNum) {
-	        rows.push(squares);
-	        squares = [];
-	      }
-	      if (rows.length === this.state.rowNum) {
-	        arr = rows;
-	      }
-	      for (var _i = 1; _i < arr.length - 1; _i++) {
-	        for (var j = 1; j < arr[_i].length - 1; j++) {
-	          arr[_i][j] = this.state.class[Math.floor(Math.random() * this.state.class.length)];
-	        }
-	      }
-	    }
-	    this.setState({ squareClass: arr });
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var intervalId = setInterval(this.setBoard, 300);
-	    // store intervalId in the state so it can be accessed later:
-	    this.setState({ intervalId: intervalId });
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    // use intervalId from the state to clear the interval
-	    clearInterval(this.state.intervalId);
-	  },
-	  startGame: function startGame(e) {
-	    console.log(arr);
-	    var count = 0;
-	    for (var i = 0; i < arr.length; i++) {
-	      for (var j = 0; j < arr[i].length; j++) {
-	        if (arr[i][j] === 0) {
-	          count++;
-	        }
-	      }
-	    }
-	    if (count === this.state.squareNum * this.state.rowNum) {
-	      return;
-	    }
-	    this.setState({ start: true, clear: false });
-	    if (this.state.currentCount === 0) {
-	      var intervalId = setInterval(this.state.setBoard, 300);
-	      this.setState({ intervalId: intervalId });
-	    }
-	  },
-	  stopGame: function stopGame(e) {
-	    this.setState({ start: false });
-	  },
-	  clearGame: function clearGame(e) {
-	    var thisArr = arr;
-	    for (var i = 0; i < thisArr.length; i++) {
-	      for (var j = 0; j < thisArr[i].length; j++) {
-	        thisArr[i][j] = 0;
-	      }
-	    }
-	    arr = thisArr;
-	    var newarr = this.state.squareClass;
-	    for (var _i2 = 0; _i2 < newarr.length; _i2++) {
-	      newarr[_i2] = 0;
-	    }
-	    this.setState({ squareClass: newarr, clear: true, currentCount: 0 });
-	  },
-	  onClick: function onClick(e) {
-	    if (!this.state.clear) {
-	      return;
-	    }
-	    var id = e.target.id;
-	    var newarr = this.state.squareClass;
-	    if (newarr[id] === 1) {
-	      e.target.className = 'squareDie';
-	      newarr[id] = 0;
-	    } else if (newarr[id] === 0) {
-	      e.target.className = 'squareLive';
-	      newarr[id] = 1;
-	    }
-	    var size = this.state.squareNum * this.state.rowNum;
-	    var squares = [];
-	    var rows = [];
-	    for (var i = 0; i < size; i++) {
-	      squares.push(newarr[i]);
-	      if (squares.length === this.state.squareNum) {
-	        rows.push(squares);
-	        squares = [];
-	      }
-	      if (rows.length === this.state.rowNum) {
-	        arr = rows;
-	      }
-	    }
-	    console.log(arr);
-	    this.setState({ squareClass: newarr });
-	  },
-	  switch: function _switch() {
-	    console.log(arr);
-	    var next = JSON.parse(JSON.stringify(arr));
-	
-	    for (var x = 1; x < arr.length - 1; x++) {
-	      for (var y = 1; y < arr[x].length - 1; y++) {
-	        var neighbors = 0;
-	        for (var i = -1; i <= 1; i++) {
-	          for (var j = -1; j <= 1; j++) {
-	            // Add up all the neighbors’ states.
-	            neighbors += arr[x + i][y + j];
-	          }
-	        }
-	        neighbors -= arr[x][y];
-	        if (arr[x][y] == 1 && neighbors < 2) next[x][y] = 0;else if (arr[x][y] == 1 && neighbors > 3) next[x][y] = 0;else if (arr[x][y] == 0 && neighbors == 3) next[x][y] = 1;else next[x][y] = arr[x][y];
-	      }
-	    }
-	    arr = next;
-	    var result = [].concat.apply([], arr);
-	    return result;
-	  },
-	  setBoard: function setBoard() {
-	    if (this.state.start && !this.state.clear) {
-	      var thisArr = arr;
-	      var count = 0;
-	      for (var _i3 = 0; _i3 < thisArr.length; _i3++) {
-	        for (var j = 0; j < thisArr[_i3].length; j++) {
-	          if (thisArr[_i3][j] === 0) {
-	            count++;
-	          }
-	        }
-	      }
-	      if (count === this.state.squareNum * this.state.rowNum) {
-	        this.setState({ currentCount: -1, clear: true });
-	      }
-	
-	      this.setState({ squareClass: this.switch() });
-	      var size = this.state.squareNum * this.state.rowNum;
-	      var squares = [];
-	      var rows = [];
-	      var board = [];
-	      for (var i = 0; i < size; i++) {
-	        squares.push(_react2.default.createElement(_square2.default, { key: i, id: i, 'class': this.state.squareClass[i] === 1 ? 'squareLive' : 'squareDie', onClick: this.onClick }));
-	        if (squares.length === this.state.squareNum) {
-	          rows.push(_react2.default.createElement(_row2.default, { key: i + 1, squares: squares }));
-	          squares = [];
-	        }
-	        if (rows.length === this.state.rowNum) {
-	          board = rows;
-	        }
-	      }
-	      this.setState({ currentCount: this.state.currentCount + 1, board: board });
-	    }
-	    if (this.state.clear) {
-	      var size = this.state.squareNum * this.state.rowNum;
-	      var squares = [];
-	      var rows = [];
-	      var board = [];
-	      for (var i = 0; i < size; i++) {
-	        squares.push(_react2.default.createElement(_square2.default, { key: i, id: i, 'class': this.state.squareClass[i] === 1 ? 'squareLive' : 'squareDie', onClick: this.onClick }));
-	        if (squares.length === this.state.squareNum) {
-	          rows.push(_react2.default.createElement(_row2.default, { key: i + 1, squares: squares }));
-	          squares = [];
-	        }
-	        if (rows.length === this.state.rowNum) {
-	          board = rows;
-	        }
-	      }
-	      this.setState({ board: board });
-	    }
-	  },
-	  render: function render() {
-	
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'container-fluid' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'row' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'col-xs-12' },
-	          _react2.default.createElement(
-	            'h1',
-	            { className: 'head' },
-	            'The Game of Life'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'game-container' },
-	            _react2.default.createElement(
-	              'h3',
-	              { className: 'gen' },
-	              'Generation: ',
-	              this.state.currentCount
-	            ),
-	            _react2.default.createElement(_board2.default, { rows: this.state.board }),
-	            _react2.default.createElement(
-	              'h4',
-	              { className: 'instructions' },
-	              'Clear the game to reset the board or try to wait for all of the cells to die.'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'buttons' },
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: ' first btn btn-primary', onClick: this.startGame },
-	                'Start'
-	              ),
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: ' second btn btn-primary', onClick: this.stopGame },
-	                'Stop'
-	              ),
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: ' third btn btn-primary', onClick: this.clearGame },
-	                'Clear'
-	              )
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	_reactDom2.default.render(_react2.default.createElement(BoardContainer, null), document.querySelector('#app'));
+	_reactDom2.default.render(_react2.default.createElement(_boardContainer2.default, null), document.querySelector('#app'));
 
 /***/ },
 /* 1 */
@@ -22004,6 +21767,265 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _square = __webpack_require__(184);
+	
+	var _square2 = _interopRequireDefault(_square);
+	
+	var _row = __webpack_require__(185);
+	
+	var _row2 = _interopRequireDefault(_row);
+	
+	var _board = __webpack_require__(186);
+	
+	var _board2 = _interopRequireDefault(_board);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var arr = [];
+	var BoardContainer = _react2.default.createClass({
+	  displayName: 'BoardContainer',
+	
+	  getInitialState: function getInitialState() {
+	    return { currentCount: 0, start: true, clear: false, intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 30, rowNum: 20 };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    var size = this.state.squareNum * this.state.rowNum;
+	    var squares = [];
+	    var rows = [];
+	    for (var i = 0; i < size; i++) {
+	      squares.push(0);
+	      if (squares.length === this.state.squareNum) {
+	        rows.push(squares);
+	        squares = [];
+	      }
+	      if (rows.length === this.state.rowNum) {
+	        arr = rows;
+	      }
+	      for (var _i = 1; _i < arr.length - 1; _i++) {
+	        for (var j = 1; j < arr[_i].length - 1; j++) {
+	          arr[_i][j] = this.state.class[Math.floor(Math.random() * this.state.class.length)];
+	        }
+	      }
+	    }
+	    this.setState({ squareClass: arr });
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var intervalId = setInterval(this.setBoard, 300);
+	    // store intervalId in the state so it can be accessed later:
+	    this.setState({ intervalId: intervalId });
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    // use intervalId from the state to clear the interval
+	    clearInterval(this.state.intervalId);
+	  },
+	  startGame: function startGame(e) {
+	    console.log(arr);
+	    var count = 0;
+	    for (var i = 0; i < arr.length; i++) {
+	      for (var j = 0; j < arr[i].length; j++) {
+	        if (arr[i][j] === 0) {
+	          count++;
+	        }
+	      }
+	    }
+	    if (count === this.state.squareNum * this.state.rowNum) {
+	      return;
+	    }
+	    this.setState({ start: true, clear: false });
+	    if (this.state.currentCount === 0) {
+	      var intervalId = setInterval(this.state.setBoard, 300);
+	      this.setState({ intervalId: intervalId });
+	    }
+	  },
+	  stopGame: function stopGame(e) {
+	    this.setState({ start: false });
+	  },
+	  clearGame: function clearGame(e) {
+	    var thisArr = arr;
+	    for (var i = 0; i < thisArr.length; i++) {
+	      for (var j = 0; j < thisArr[i].length; j++) {
+	        thisArr[i][j] = 0;
+	      }
+	    }
+	    arr = thisArr;
+	    var newarr = this.state.squareClass;
+	    for (var _i2 = 0; _i2 < newarr.length; _i2++) {
+	      newarr[_i2] = 0;
+	    }
+	    this.setState({ squareClass: newarr, clear: true, currentCount: 0 });
+	  },
+	  onClick: function onClick(e) {
+	    if (!this.state.clear) {
+	      return;
+	    }
+	    var id = e.target.id;
+	    var newarr = this.state.squareClass;
+	    if (newarr[id] === 1) {
+	      e.target.className = 'squareDie';
+	      newarr[id] = 0;
+	    } else if (newarr[id] === 0) {
+	      e.target.className = 'squareLive';
+	      newarr[id] = 1;
+	    }
+	    var size = this.state.squareNum * this.state.rowNum;
+	    var squares = [];
+	    var rows = [];
+	    for (var i = 0; i < size; i++) {
+	      squares.push(newarr[i]);
+	      if (squares.length === this.state.squareNum) {
+	        rows.push(squares);
+	        squares = [];
+	      }
+	      if (rows.length === this.state.rowNum) {
+	        arr = rows;
+	      }
+	    }
+	    console.log(arr);
+	    this.setState({ squareClass: newarr });
+	  },
+	  switch: function _switch() {
+	    console.log(arr);
+	    var next = JSON.parse(JSON.stringify(arr));
+	
+	    for (var x = 1; x < arr.length - 1; x++) {
+	      for (var y = 1; y < arr[x].length - 1; y++) {
+	        var neighbors = 0;
+	        for (var i = -1; i <= 1; i++) {
+	          for (var j = -1; j <= 1; j++) {
+	            // Add up all the neighbors’ states.
+	            neighbors += arr[x + i][y + j];
+	          }
+	        }
+	        neighbors -= arr[x][y];
+	        if (arr[x][y] == 1 && neighbors < 2) next[x][y] = 0;else if (arr[x][y] == 1 && neighbors > 3) next[x][y] = 0;else if (arr[x][y] == 0 && neighbors == 3) next[x][y] = 1;else next[x][y] = arr[x][y];
+	      }
+	    }
+	    arr = next;
+	    var result = [].concat.apply([], arr);
+	    return result;
+	  },
+	  setBoard: function setBoard() {
+	    if (this.state.start && !this.state.clear) {
+	      var thisArr = arr;
+	      var count = 0;
+	      for (var _i3 = 0; _i3 < thisArr.length; _i3++) {
+	        for (var j = 0; j < thisArr[_i3].length; j++) {
+	          if (thisArr[_i3][j] === 0) {
+	            count++;
+	          }
+	        }
+	      }
+	      if (count === this.state.squareNum * this.state.rowNum) {
+	        this.setState({ currentCount: -1, clear: true });
+	      }
+	
+	      this.setState({ squareClass: this.switch() });
+	      var size = this.state.squareNum * this.state.rowNum;
+	      var squares = [];
+	      var rows = [];
+	      var board = [];
+	      for (var i = 0; i < size; i++) {
+	        squares.push(_react2.default.createElement(_square2.default, { key: i, id: i, 'class': this.state.squareClass[i] === 1 ? 'squareLive' : 'squareDie', onClick: this.onClick }));
+	        if (squares.length === this.state.squareNum) {
+	          rows.push(_react2.default.createElement(_row2.default, { key: i + 1, squares: squares }));
+	          squares = [];
+	        }
+	        if (rows.length === this.state.rowNum) {
+	          board = rows;
+	        }
+	      }
+	      this.setState({ currentCount: this.state.currentCount + 1, board: board });
+	    }
+	    if (this.state.clear) {
+	      var size = this.state.squareNum * this.state.rowNum;
+	      var squares = [];
+	      var rows = [];
+	      var board = [];
+	      for (var i = 0; i < size; i++) {
+	        squares.push(_react2.default.createElement(_square2.default, { key: i, id: i, 'class': this.state.squareClass[i] === 1 ? 'squareLive' : 'squareDie', onClick: this.onClick }));
+	        if (squares.length === this.state.squareNum) {
+	          rows.push(_react2.default.createElement(_row2.default, { key: i + 1, squares: squares }));
+	          squares = [];
+	        }
+	        if (rows.length === this.state.rowNum) {
+	          board = rows;
+	        }
+	      }
+	      this.setState({ board: board });
+	    }
+	  },
+	  render: function render() {
+	
+	    return _react2.default.createElement(
+	      'div',
+	      { className: 'container-fluid' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-xs-12' },
+	          _react2.default.createElement(
+	            'h1',
+	            { className: 'head' },
+	            'The Game of Life'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'game-container' },
+	            _react2.default.createElement(
+	              'h3',
+	              { className: 'gen' },
+	              'Generation: ',
+	              this.state.currentCount
+	            ),
+	            _react2.default.createElement(_board2.default, { rows: this.state.board }),
+	            _react2.default.createElement(
+	              'h4',
+	              { className: 'instructions' },
+	              'Clear the game to reset the board or try to wait for all of the cells to die.'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'buttons' },
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: ' first btn btn-primary', onClick: this.startGame },
+	                'Start'
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: ' second btn btn-primary', onClick: this.stopGame },
+	                'Stop'
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: ' third btn btn-primary', onClick: this.clearGame },
+	                'Clear'
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	exports.default = BoardContainer;
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Square = _react2.default.createClass({
@@ -22021,7 +22043,7 @@
 	exports.default = Square;
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22051,7 +22073,7 @@
 	exports.default = Row;
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
