@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Cousine|Libre+Franklin');
 .head {
   text-align: center;
   padding: 5px;
   color: #47494c;
+  font-family: 'Cousine', monospace;
 }
 .game-container {
+  font-family: 'Cousine', monospace;
   color: #47494c;
   max-width: 650px;
   margin: auto;
