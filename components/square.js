@@ -1,12 +1,9 @@
 import React from 'react';
-var Square = React.createClass({
-    render: function(){
-      return(
-        <div>
-          <div className={this.props.class} id={this.props.id} onClick={this.props.onClick}/>
-        </div>
-      )
-    }
-})
-
+const Square = (props) => {
+  return(
+    <div>
+      <div className={props.class} id={props.id} onClick={props.onClick}/>
+    </div>
+  )
+}
 export default Square;

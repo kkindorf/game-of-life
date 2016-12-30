@@ -2,15 +2,24 @@ import React from 'react';
 import Square from './square';
 import Row from './row';
 import Board from './board';
-var arr = [];
-var BoardContainer = React.createClass({
-  getInitialState: function() {
-    return { currentCount: 0, start: true, clear: false,  intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 30, rowNum: 20};
-  },
-  componentWillMount: function(){
+
+class BoardContainer extends React.Component {
+  constructor(props){
+    super(props);
+    this.state=({ currentCount: 0, start: true, clear: false,  intervalId: '', class: [0, 1], squareClass: [], setClass: [], board: [], squareNum: 30, rowNum: 20});
+    this.arr = [];
+    this.startGame = this.startGame.bind(this);
+    this.stopGame = this.stopGame.bind(this);
+    this.clearGame = this.clearGame.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.switch = this.switch.bind(this);
+    this.setBoard = this.setBoard.bind(this);
+
+  }
+  componentWillMount(){
     let size = this.state.squareNum * this.state.rowNum;
-    var squares = [];
-    var rows = [];
+    let squares = [];
+    let rows = [];
     for(let i=0; i < size; i++){
       squares.push(0)
       if(squares.length === this.state.squareNum){
@@ -18,32 +27,31 @@ var BoardContainer = React.createClass({
         squares = [];
       }
       if(rows.length === this.state.rowNum){
-        arr = rows;
+        this.arr = rows;
       }
-      for(let i = 1; i < arr.length-1; i++){
-        for(let j=1; j < arr[i].length-1; j++){
-          arr[i][j] = this.state.class[Math.floor(Math.random()*this.state.class.length)];
+      for(let i = 1; i < this.arr.length-1; i++){
+        for(let j=1; j < this.arr[i].length-1; j++){
+          this.arr[i][j] = this.state.class[Math.floor(Math.random()*this.state.class.length)];
         }
       }
 
     }
-    this.setState({squareClass: arr})
-  },
-  componentDidMount: function() {
-      var intervalId = setInterval(this.setBoard, 300);
+    this.setState({squareClass: this.arr})
+  }
+  componentDidMount() {
+      let intervalId = setInterval(this.setBoard, 300);
      // store intervalId in the state so it can be accessed later:
      this.setState({intervalId: intervalId});
-  },
-  componentWillUnmount: function() {
+  }
+  componentWillUnmount() {
      // use intervalId from the state to clear the interval
      clearInterval(this.state.intervalId);
-  },
-  startGame: function(e){
-    console.log(arr)
+  }
+  startGame(e){
     let count = 0;
-    for(let i = 0; i<arr.length; i++){
-      for(let j = 0; j < arr[i].length; j++){
-        if(arr[i][j] === 0){
+    for(let i = 0; i<this.arr.length; i++){
+      for(let j = 0; j < this.arr[i].length; j++){
+        if(this.arr[i][j] === 0){
           count++;
         }
       }
@@ -56,26 +64,26 @@ var BoardContainer = React.createClass({
       let intervalId=(setInterval(this.state.setBoard, 300))
      this.setState({intervalId: intervalId});
     }
-  },
-  stopGame: function(e){
+  }
+  stopGame(e){
     this.setState({start: false})
-  },
-  clearGame: function(e){
-    let thisArr = arr;
+  }
+  clearGame(e){
+    let thisArr = this.arr;
     for(let i = 0; i<thisArr.length; i++){
       for(let j = 0; j < thisArr[i].length; j++){
         thisArr[i][j] = 0
 
       }
     }
-    arr = thisArr;
+    this.arr = thisArr;
     let newarr = this.state.squareClass;
     for(let i = 0; i < newarr.length; i++){
       newarr[i]=0;
     }
     this.setState({squareClass: newarr, clear: true, currentCount: 0})
-  },
-  onClick: function(e){
+  }
+  onClick(e){
     if(!this.state.clear){
       return;
     }
@@ -101,41 +109,39 @@ var BoardContainer = React.createClass({
         squares = [];
       }
       if(rows.length === this.state.rowNum){
-        arr = rows;
+        this.arr = rows;
       }
     }
-    console.log(arr)
     this.setState({squareClass: newarr})
 
 
-  },
-  switch: function(){
-    console.log(arr)
-    let next = JSON.parse(JSON.stringify(arr));
+  }
+  switch() {
+      let next = JSON.parse(JSON.stringify(this.arr));
 
-for (let x = 1; x < arr.length-1; x++) {
-for (let y = 1; y < arr[x].length-1; y++) {
-let neighbors = 0;
-for (let i = -1; i <= 1; i++) {
-for (let j = -1; j <= 1; j++) {
-  // Add up all the neighbors’ states.
-  neighbors += arr[x+i][y+j];
- }
-}
-neighbors -= arr[x][y];
-  if      ((arr[x][y] == 1) && (neighbors <  2)) next[x][y] = 0;
-  else if ((arr[x][y] == 1) && (neighbors >  3)) next[x][y] = 0;
-  else if ((arr[x][y] == 0) && (neighbors == 3)) next[x][y] = 1;
-  else next[x][y] = arr[x][y];
-}
-}
-  arr = next;
-  let result = [].concat.apply([],arr)
-  return result;
-},
-  setBoard: function() {
+      for (let x = 1; x < this.arr.length - 1; x++) {
+          for (let y = 1; y < this.arr[x].length - 1; y++) {
+              let neighbors = 0;
+              for (let i = -1; i <= 1; i++) {
+                  for (let j = -1; j <= 1; j++) {
+                      // Add up all the neighbors’ states.
+                      neighbors += this.arr[x + i][y + j];
+                  }
+              }
+              neighbors -= this.arr[x][y];
+              if ((this.arr[x][y] == 1) && (neighbors < 2)) next[x][y] = 0;
+              else if ((this.arr[x][y] == 1) && (neighbors > 3)) next[x][y] = 0;
+              else if ((this.arr[x][y] == 0) && (neighbors == 3)) next[x][y] = 1;
+              else next[x][y] = this.arr[x][y];
+          }
+      }
+      this.arr = next;
+      let result = [].concat.apply([], this.arr)
+      return result;
+  }
+  setBoard() {
     if(this.state.start && !this.state.clear){
-      let thisArr = arr;
+      let thisArr = this.arr;
       let count = 0;
       for(let i = 0; i < thisArr.length; i++){
         for(let j = 0; j < thisArr[i].length; j++){
@@ -183,9 +189,8 @@ neighbors -= arr[x][y];
       }
        this.setState({board: board});
     }
-
-  },
-  render: function() {
+  }
+  render() {
 
       return (
         <div className="container-fluid">
@@ -207,5 +212,5 @@ neighbors -= arr[x][y];
         </div>
       );
   }
-});
+}
 export default BoardContainer;
